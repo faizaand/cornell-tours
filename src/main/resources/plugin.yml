@@ -1,8 +1,15 @@
-name: Cornell Tours
+name: CornellTours
 version: @version@
 main: dev.faizaan.cornelltours.CornellTours
 api-version: 1.16
-depend: [NPCLib]
+#depend: [NPCLib]
 authors: [FaizaanDatoo]
 description: Guided tours plugin for CornellCraft virtual tours.
 website: https://faizaan.dev
+commands:
+  foo:
+    description: Foo bar
+  moveto:
+    description: move to you
+  endtour:
+    description: End the tour

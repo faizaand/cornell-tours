@@ -1,6 +1,7 @@
 package dev.faizaan.cornelltours
 
 import org.bukkit.Location
+import org.bukkit.World
 
 data class Waypoint(
         val x: Double,
@@ -10,7 +11,7 @@ data class Waypoint(
     /**
      * Converts this waypoint to a new Bukkit [Location] object.
      */
-    fun toLocation(): Location {
-        return Location(CornellTours.defaultWorld, x, y, z);
+    fun toLocation(world: World): Location {
+        return Location(world, x, y, z);
     }
 }

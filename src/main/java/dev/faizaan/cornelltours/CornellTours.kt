@@ -2,23 +2,38 @@ package dev.faizaan.cornelltours
 
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
-import org.bukkit.World
+import org.bukkit.command.Command
+import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 
-object CornellTours : JavaPlugin() {
-
-    var defaultWorld: World? = null
+class CornellTours : JavaPlugin() {
 
     override fun onEnable() {
         saveDefaultConfig()
-
-        this.defaultWorld = Bukkit.getWorlds().first { world -> world.name == config.getString("defaultWorld") }
-
+        TourManager.init()
+        CTCommands.init(this)
         log("Enabled CornellTours v%s by Faizaan Datoo. Licensed under MIT License.", description.version)
     }
 
     override fun onDisable() {
         log("Successfully disabled. Goodbye!")
+    }
+
+    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
+        if (command.name == "foo") {
+            TourManager.startTour(sender as Player)
+            return true
+        }
+        if(command.name == "moveto") {
+            TourManager.moveToMe(sender as Player)
+            return true
+        }
+        if(command.name == "endtour") {
+            TourManager.endTour(sender as Player)
+            return true
+        }
+        return false;
     }
 
     fun log(m: String?, vararg format: Any?) {
