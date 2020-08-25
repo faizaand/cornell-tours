@@ -15,6 +15,7 @@ import java.util.*
 object TourManager {
 
     var activeTours: MutableMap<UUID, Tour> = mutableMapOf()
+    var destinations: MutableList<Destination> = mutableListOf()
 
     fun init() {
         Events.subscribe(PlayerMoveEvent::class.java)
@@ -57,9 +58,6 @@ object TourManager {
         activeTours[player.uniqueId] = tour
 
         nms.goalSelector.a(8, PathfinderGoalGuidePlayer(nms, tour))
-
-        player.sendMessage("Welcome to the tour!")
-        // TODO select target
     }
 
     fun moveToMe(player: Player) {

@@ -14,4 +14,8 @@ data class Waypoint(
     fun toLocation(world: World): Location {
         return Location(world, x, y, z);
     }
+
+    override fun toString(): String {
+        return "($x, $y, $z)"
+    }
 }

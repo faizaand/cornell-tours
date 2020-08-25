@@ -7,9 +7,12 @@ authors: [FaizaanDatoo]
 description: Guided tours plugin for CornellCraft virtual tours.
 website: https://faizaan.dev
 commands:
-  foo:
-    description: Foo bar
-  moveto:
-    description: move to you
+  tour:
+    description: Start a new tour.
+    permission: cornelltours.default
   endtour:
-    description: End the tour
+    description: Ends your active tour.
+    permission: cornelltours.default
+  destination:
+    description: Administrative commands for tour destinations.
+    permission: cornelltours.admin

@@ -1,2 +1,29 @@
-# Config
-version: 1
+# These are all of the destinations.
+
+first:
+  title: First Stop
+  subtitle: College Avenue
+  description: This is a very cool place. &cSuper &lcool&r. You can do so many things here.\n\nIdk what else to say.
+  location:
+    x: -10
+    y: 77
+    z: 297
+  adjacent: [ orange ]
+orange:
+  title: Second Stop
+  subtitle: College Avenue
+  description: Oranges are annoying sometimes.
+  location:
+    x: -18
+    y: 76
+    z: 279
+  adjacent: [ first, pupple ]
+pupple:
+  title: Pupple
+  subtitle: Tower Road
+  description: Purple, but dumb.
+  location:
+    x: -16
+    y: 76
+    z: 258
+  adjacent: [ orange ]
