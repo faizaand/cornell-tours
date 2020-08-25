@@ -1,6 +1,7 @@
 package dev.faizaan.cornelltours
 
 import me.lucko.helper.Events
+import me.lucko.helper.utils.Players
 import net.minecraft.server.v1_16_R1.*
 import org.bukkit.Bukkit
 import org.bukkit.Location
@@ -8,6 +9,7 @@ import org.bukkit.craftbukkit.v1_16_R1.entity.CraftLivingEntity
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
+import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import java.util.*
 
@@ -22,19 +24,39 @@ object TourManager {
                 .filter { x -> activeTours.containsKey(x.player.uniqueId) }
                 .filter { x -> activeTours[x.player.uniqueId]!!.active }
                 .filter { x -> activeTours[x.player.uniqueId]!!.target != null }
-                .handler {event ->
+                .handler { event ->
                     val tour = activeTours[event.player.uniqueId]!!
                     val loc = tour.target!!.loc
 
-                    Bukkit.getLogger().info("X: ${event.player.location.x} vs ${loc.x}; Y: ${event.player.location.y} vs ${loc.y}; Z: ${event.player.location.z} vs ${loc.z}")
+                    // Bukkit.getLogger().info("X: ${event.player.location.x} vs ${loc.x}; Y: ${event.player.location.y} vs ${loc.y}; Z: ${event.player.location.z} vs ${loc.z}")
 
-                    if(inRange(event.player.location, loc.toLocation(event.player.world), 5.0)) {
+                    if (inRange(event.player.location, loc.toLocation(event.player.world), 5.0)) {
                         // reached destination
-                        Bukkit.getLogger().info("Reached")
                         event.player.sendTitle(tour.target!!.title, tour.target!!.subtitle)
-                        event.player.sendMessage(tour.target!!.description)
+                        Players.msg(
+                                event.player,
+                                "&8.-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-.",
+                                tour.target!!.title,
+                                "&7&o" + tour.target!!.title,
+                                "&r",
+                                tour.target!!.description,
+                                "&8.-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-.",
+                                "&r",
+                                "&aPunch me or type &o/tours&r&a to select your next destination!"
+                        )
+                        // TODO adjacency
+
+
                         tour.target = null // clear this waypoint
-                        TODO("where to next?")
+                    }
+                }
+
+        Events.subscribe(EntityDamageByEntityEvent::class.java)
+                .filter { x -> x.entityType == EntityType.VILLAGER }
+                .handler { e ->
+                    e.isCancelled = true
+                    if(activeTours.containsKey(e.damager.uniqueId)) {
+                        DestinationGui(e.damager as Player).open()
                     }
                 }
     }
