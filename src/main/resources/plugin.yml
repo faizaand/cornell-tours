@@ -1,5 +1,5 @@
 name: CornellTours
-version: @version@
+version: 1.0.0
 main: dev.faizaan.cornelltours.CornellTours
 api-version: 1.16
 #depend: [NPCLib]
@@ -9,6 +9,9 @@ website: https://faizaan.dev
 commands:
   tour:
     description: Start a new tour.
+    permission: cornelltours.default
+  resume:
+    description: Resumes your tour when the tour guide is waiting for you.
     permission: cornelltours.default
   endtour:
     description: Ends your active tour.

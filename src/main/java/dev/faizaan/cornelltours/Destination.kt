@@ -6,4 +6,5 @@ data class Destination(
         val title: String,
         val subtitle: String,
         val description: String,
+        val adjacents: List<String>
 )

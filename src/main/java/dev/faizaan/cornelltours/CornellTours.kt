@@ -3,10 +3,6 @@ package dev.faizaan.cornelltours
 import me.lucko.helper.plugin.ExtendedJavaPlugin
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
-import org.bukkit.command.Command
-import org.bukkit.command.CommandSender
-import org.bukkit.configuration.MemorySection
-import org.bukkit.entity.Player
 
 class CornellTours : ExtendedJavaPlugin() {
 
@@ -19,23 +15,8 @@ class CornellTours : ExtendedJavaPlugin() {
     }
 
     override fun disable() {
+        TourManager.destroy()
         log("Successfully disabled. Goodbye!")
-    }
-
-    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
-        if (command.name == "foo") {
-            TourManager.startTour(sender as Player)
-            return true
-        }
-        if (command.name == "moveto") {
-            TourManager.moveToMe(sender as Player)
-            return true
-        }
-        if (command.name == "endtour") {
-            TourManager.endTour(sender as Player)
-            return true
-        }
-        return false;
     }
 
     fun loadDestinations() {
@@ -44,8 +25,9 @@ class CornellTours : ExtendedJavaPlugin() {
             log(k)
             val x = config.getConfigurationSection(k) ?: return
             val loc = Waypoint(x.getDouble("location.x"), x.getDouble("location.y"), x.getDouble("location.z"))
-            val d = Destination(k, loc, x.getString("title") ?: k, x.getString("subtitle") ?: "", x.getString("description") ?: "&7&oNo description provided.")
-            // TODO adjacency
+            val adjacents = x.getStringList("adjacent")
+            val d = Destination(k, loc, x.getString("title") ?: k, x.getString("subtitle")
+                    ?: "", x.getString("description") ?: "&7&oNo description provided.", adjacents)
             dests.add(d)
         }
         TourManager.destinations = dests
